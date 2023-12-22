@@ -42,16 +42,6 @@ Philosophers only take one fork at a time.
 Philosophers do not communicate with each other directly, only through the shared forks.
 The goal is to design a solution (algorithm or set of rules) that allows the philosophers to dine without deadlocking, where deadlock occurs when each philosopher holds one fork and waits indefinitely for the other, resulting in all philosophers being stuck and unable to continue.
 
->Solving the Dining Philosophers problem involves creating a set of rules or protocols to prevent deadlocks and ensure fair access to resources (forks in this case). Some common strategies to address this problem include:
-
-> * Resource Allocation: Implement a mechanism that allows philosophers to access forks without causing deadlock. This could involve assigning a priority order for philosophers to pick up the forks, ensuring that no philosopher can starve.
-
-> * Asymmetric Solution: Introduce an asymmetry where one philosopher picks up forks in a different order compared to others, breaking the possibility of a circular wait condition.
-
-> * Mutex (Mutual Exclusion): Use locks or semaphores to ensure exclusive access to shared resources (forks) and prevent multiple philosophers from simultaneously accessing the same fork.
-
-> * Arbitrator: Introduce a central authority or arbitrator that controls the access to forks, ensuring that philosophers can only access forks when available and preventing deadlocks.
-
 > The Dining Philosophers problem serves as an example in concurrent programming and illustrates the challenges of resource sharing, synchronization, and avoiding deadlocks in systems with multiple competing processes. Solutions to this problem often demonstrate synchronization techniques and strategies for managing shared resources among concurrent processes efficiently and safely.
 
 ![image](https://github.com/Musa-Sina-Ertugrul/Solution_Dining_P/assets/102359522/b8800459-e358-4e74-b81f-75153db01f57)
