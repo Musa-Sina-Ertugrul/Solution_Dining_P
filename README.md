@@ -1,9 +1,9 @@
 # Multithreading Queue in Python and Dining Philosophers Problem
 ## Multithreading Queue
-> In Python, the queue module provides a thread-safe FIFO (First-In-First-Out) data structure that can be used for communication between multiple threads. It helps in managing the flow of data between threads in a synchronized manner, preventing race conditions and data corruption.
+> In Python, the queue module is designed to facilitate secure communication between multiple threads by offering a thread-safe FIFO data structure. This structure ensures a synchronized flow of data, preventing potential issues like race conditions and data corruption.
 
 >Usage of queue.Queue()
-To use a queue in Python, you can create an instance of queue.Queue() and utilize its methods like put() to add items to the queue and get() to retrieve items from the queue.
+When working with Python, the queue module becomes a valuable tool for managing communication between threads. It introduces a thread-safe First-In-First-Out (FIFO) data structure, safeguarding against race conditions and data corruption by enabling synchronized data flow.
 
 ```python
 import queue
@@ -25,29 +25,33 @@ print(q.get())  # Output: 3
 ![image](https://github.com/Musa-Sina-Ertugrul/Solution_Dining_P/assets/102359522/df48d7cd-f71e-4037-9ee2-6460edd6ebcd)
 
 ## Dining Philosophers Problem
-> The Dining Philosophers problem is a classic synchronization problem in computer science that illustrates issues with resource allocation and concurrent processes. It was introduced by E.W. Dijkstra in 1965 to demonstrate the challenges of avoiding deadlock and ensuring the safe sharing of limited resources among multiple processes.
+> The Dining Philosophers problem stands as a classical synchronization challenge within the realm of computer science, shedding light on the complexities associated with resource allocation and concurrent processes. Originating from the mind of E.W. Dijkstra in 1965, this problem aims to showcase the difficulties in preventing deadlock and ensuring the secure distribution of limited resources among various processes.
 
->The problem is framed around a scenario where a certain number of philosophers are seated at a round dining table, with a bowl of spaghetti placed between each pair of adjacent philosophers. The philosophers spend their time alternating between two activities: thinking and eating.
+>Imagine a scenario where a group of philosophers is arranged around a circular dining table, each pair of adjacent philosophers having a bowl of spaghetti between them. These philosophers alternate between two activities: contemplating and eating.
 
->Each philosopher has a few basic actions:
+>In this scenario, each philosopher engages in two fundamental actions:
 
->Thinking: Philosophers spend their time thinking until they become hungry.
+>Contemplating: Philosophers spend their time lost in thought until hunger strikes.
 
->Eating: To eat, a philosopher needs two forks - one for the left hand and one for the right hand. They pick up the forks, eat for a while, and then put the forks back on the table.
+>Eating:  To satisfy their hunger, a philosopher requires two forks—one for the left hand and one for the right. They pick up the necessary forks, dine for a while, and then return the forks to the table.
 
->The challenge arises from the following conditions:
+>The inherent challenge emerges from the following conditions:
 
->Each philosopher needs two forks to eat.
+>Every philosopher requires two forks to eat.
 Philosophers only take one fork at a time.
-Philosophers do not communicate with each other directly, only through the shared forks.
-The goal is to design a solution (algorithm or set of rules) that allows the philosophers to dine without deadlocking, where deadlock occurs when each philosopher holds one fork and waits indefinitely for the other, resulting in all philosophers being stuck and unable to continue.
+Direct communication between philosophers is absent; they communicate solely through shared forks
+The objective is to devise a solution, be it an algorithm or a set of rules, that permits the philosophers to dine without succumbing to deadlock. Deadlock occurs when each philosopher holds one fork and waits indefinitely for the other, resulting in a situation where all philosophers are immobilized and unable to proceed.
 
-> The Dining Philosophers problem serves as an example in concurrent programming and illustrates the challenges of resource sharing, synchronization, and avoiding deadlocks in systems with multiple competing processes. Solutions to this problem often demonstrate synchronization techniques and strategies for managing shared resources among concurrent processes efficiently and safely.
+> The Dining Philosophers problem serves as a paradigm in concurrent programming, providing a tangible example of the hurdles associated with resource sharing, synchronization, and deadlock avoidance in systems featuring multiple competing processes. Solutions to this problem often showcase various synchronization techniques and strategies for efficiently and safely managing shared resources among concurrent processes.
 
 ![image](https://github.com/Musa-Sina-Ertugrul/Solution_Dining_P/assets/102359522/b8800459-e358-4e74-b81f-75153db01f57)
 
 ## Pesudo Solution using Multithreading Queue
-> Here's an example pesudo implementation using Python's threading and queue modules:
+>
+> The provided code illustrates how the Dining Philosophers problem is addressed through the utilization of threads (implemented as the Philosopher class) and a queue for fork access control. Philosophers, represented by instances of the Philosopher class, seamlessly alternate between thinking and eating, ensuring the acquisition of both left and right forks before commencing their meal. The queue serves as a synchronization mechanism among philosophers, mitigating conflicts during fork access.
+>This methodology effectively manages shared resources, specifically the forks, among philosophers, thereby averting deadlocks and guaranteeing equitable resource access. Through this example, it is demonstrated how Python's multithreading queue (queue.Queue()) can be applied to resolve synchronization challenges such as the Dining Philosophers problem in a manner that ensures thread safety.
+>
+>Here's an example pesudo implementation using Python's threading and queue modules:
 
 ```python
 import threading
@@ -108,11 +112,46 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-> This code demonstrates the implementation of the Dining Philosophers problem using threads (Philosopher class) and a queue to control access to forks. Philosophers alternate between thinking and eating while ensuring they acquire both the left and right forks before eating. The queue is used for synchronization between philosophers to avoid conflicts while accessing the forks.
+> Code Explanation: 
 
-> This approach helps in managing the shared resources (forks) efficiently among the philosophers, preventing deadlocks and ensuring fair access to the resources.
+1.Controller Class
+The Controller class manages access to the forks using two queues (q_right and q_left) and a lock (l) for synchronization.
+The __enter__ method is called when entering a with block, acquiring the lock.
+The __exit__ method is called when exiting the with block, releasing the lock.
+The __call__ method adds a philosopher to both the left and right queues.
 
-> This example showcases how Python's multithreading queue (queue.Queue()) can be employed to solve synchronization problems like the Dining Philosophers problem in a thread-safe manner.
+2. Fork Class:
+ The Fork class represents a fork with an index, a lock for synchronization, and status information (picked up, owner).
+The __enter__ and __exit__ methods allow the fork to be used in a with statement.
+The __call__ method is used to pick up the fork and set the owner.
+The __str__ method returns a string representation of the fork.
+
+3..Philiosopher Class: 
+The Philosopher class extends threading.Thread and represents a philosopher thread.
+The run method is the main loop where philosophers think and eat.
+The think method simulates thinking by sleeping for a random time.
+The eat method checks for available forks, picks them up, and simulates eating.
+The __check_left and __check_right methods check the availability of left and right forks using queues.
+The __str__ method returns a string representation of the philosopher.
+
+4..Animated Table Function:
+This function creates an animated visualization of the dining philosophers problem using Matplotlib.
+It uses circles and lines to represent philosophers and forks, updating their positions and states in each frame.
+The update function is called in each frame to update the visualization.
+
+5.Table Function:
+This function prints the current state of philosophers and forks in a tabular format.
+It uses the terminal to display the state dynamically.
+
+6. Main Function:
+The main function sets up the dining philosophers scenario with a specified number of philosophers (n) and spaghetti portions (m).
+It creates forks, a controller, and a list of philosophers with corresponding forks.
+The table function is run in a separate thread to print the current state of philosophers and forks.
+The animated_table function is called to create an animated visualization of the dining process.
+
+
+
+
 
 ![image](https://github.com/Musa-Sina-Ertugrul/Solution_Dining_P/assets/102359522/e8a78821-bd21-4bc5-838f-706114d9ccec)
 
