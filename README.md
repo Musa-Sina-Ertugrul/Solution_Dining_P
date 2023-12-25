@@ -114,19 +114,19 @@ if __name__ == "__main__":
 ```
 > Code Explanation: 
 
-1.Controller Class
+* 1.Controller Class
 The Controller class manages access to the forks using two queues (q_right and q_left) and a lock (l) for synchronization.
 The __enter__ method is called when entering a with block, acquiring the lock.
 The __exit__ method is called when exiting the with block, releasing the lock.
 The __call__ method adds a philosopher to both the left and right queues.
 
-2.Fork Class:
+* 2.Fork Class:
 The Fork class represents a fork with an index, a lock for synchronization, and status information (picked up, owner).
 The __enter__ and __exit__ methods allow the fork to be used in a with statement.
 The __call__ method is used to pick up the fork and set the owner.
 The __str__ method returns a string representation of the fork.
 
-3.Philiosopher Class: 
+* 3.Philiosopher Class: 
 The Philosopher class extends threading.Thread and represents a philosopher thread.
 The run method is the main loop where philosophers think and eat.
 The think method simulates thinking by sleeping for a random time.
@@ -134,16 +134,16 @@ The eat method checks for available forks, picks them up, and simulates eating.
 The __check_left and __check_right methods check the availability of left and right forks using queues.
 The __str__ method returns a string representation of the philosopher.
 
-4.Animated Table Function:
+* 4.Animated Table Function:
 This function creates an animated visualization of the dining philosophers problem using Matplotlib.
 It uses circles and lines to represent philosophers and forks, updating their positions and states in each frame.
 The update function is called in each frame to update the visualization.
 
-5.Table Function:
+* 5.Table Function:
 This function prints the current state of philosophers and forks in a tabular format.
 It uses the terminal to display the state dynamically.
 
-6.Main Function:
+* 6.Main Function:
 The main function sets up the dining philosophers scenario with a specified number of philosophers (n) and spaghetti portions (m).
 It creates forks, a controller, and a list of philosophers with corresponding forks.
 The table function is run in a separate thread to print the current state of philosophers and forks.
