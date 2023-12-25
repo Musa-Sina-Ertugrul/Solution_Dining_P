@@ -9,8 +9,7 @@ from copy import copy
 
 class Controller:
 
-    q_right : Queue = Queue()
-    q_left : Queue = Queue()
+    q : Queue = Queue()
     l : threading.Lock = threading.Lock()
     def __init__(self):
         super().__init__()
@@ -26,8 +25,7 @@ class Controller:
         return True
     
     def __call__(self, p : "Philosopher"):
-        Controller.q_right.put(p)
-        Controller.q_left.put(p)
+        Controller.q.put(p)
         return self
 
 
@@ -77,7 +75,7 @@ class Philosopher(threading.Thread):
 
     def eat(self):
         with self.q(self):
-            if self.__check_left() and self.__check_right():
+            if self.__check_left():
                 with self.left_fork(self.index):
                     time.sleep(5 + random.random() * 5)
                     with self.right_fork(self.index):
@@ -87,20 +85,11 @@ class Philosopher(threading.Thread):
                         self.eating = False
 
     def __check_left(self)-> bool:
-        tmp = Controller.q_left.get()
+        tmp = Controller.q.get()
         if tmp == None:
             return False
         elif tmp != self:
-            Controller.q_left.put(tmp)
-            return False
-        return True
-
-    def __check_right(self)-> bool:
-        tmp = Controller.q_right.get()
-        if tmp == None:
-            return False
-        elif tmp != self:
-            Controller.q_right.put(tmp)
+            Controller.q.put(tmp)
             return False
         return True
 
