@@ -6,26 +6,22 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from queue import Queue
 from copy import copy
+from threading import Semaphore
 
 class Controller:
 
-    q : Queue = Queue()
-    l : threading.Lock = threading.Lock()
+    s : Semaphore = Semaphore(2)
     def __init__(self):
         super().__init__()
 
     def __enter__(self):
-        if Controller.l.acquire():
-            return self
-        self.__exit__()
+        Controller.s.acquire()
     
     def __exit__(self, exc_type, exc_value, traceback):
-        if Controller.l.locked():
-            Controller.l.release()
+        Controller.s.release()
         return True
     
     def __call__(self, p : "Philosopher"):
-        Controller.q.put(p)
         return self
 
 
@@ -74,24 +70,14 @@ class Philosopher(threading.Thread):
         time.sleep(3 + random.random() * 3)
 
     def eat(self):
-        with self.q(self):
-            if self.__check_left():
-                with self.left_fork(self.index):
+        with self.q:
+            with self.left_fork(self.index):
+                time.sleep(5 + random.random() * 5)
+                with self.right_fork(self.index):
+                    self.spaghetti -= 1
+                    self.eating = True
                     time.sleep(5 + random.random() * 5)
-                    with self.right_fork(self.index):
-                        self.spaghetti -= 1
-                        self.eating = True
-                        time.sleep(5 + random.random() * 5)
-                        self.eating = False
-
-    def __check_left(self)-> bool:
-        tmp = Controller.q.get()
-        if tmp == None:
-            return False
-        elif tmp != self:
-            Controller.q.put(tmp)
-            return False
-        return True
+                    self.eating = False
 
     def __str__(self):
         return f"P{self.index:2d} ({self.spaghetti:2d})"
